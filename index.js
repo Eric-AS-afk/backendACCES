@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import sql from "mssql"; // Cambiado a mssql
+import mysql from 'mysql2/promise';
 import {
   DB_DATABASE,
   DB_HOST,
@@ -28,23 +28,19 @@ import fs from 'fs';
 
 const app = express();
 
-const sqlConfig = {
+const mysqlConfig = {
+  host: DB_HOST,
   user: DB_USER,
   password: DB_PASSWORD,
   database: DB_DATABASE,
-  server: DB_HOST,
-  //port: parseInt(DB_PORT), // Asegúrate de que sea un número
-  options: {
-    encrypt: true, // Usar en conexiones seguras
-    trustServerCertificate: true, // Usar si no tienes un certificado SSL
-  },
-  requestTimeout: 60000, // Aumenta el tiempo de espera a 60 segundos
-  pool: {
-    max: 10, // Número máximo de conexiones en el pool
-    min: 0, // Número mínimo de conexiones en el pool
-    idleTimeoutMillis: 30000, // Tiempo de espera para cerrar conexiones inactivas
-  },
+  // port: DB_PORT ? parseInt(DB_PORT) : undefined,
+  waitForConnections: true,
+  connectionLimit: 10,
+  connectTimeout: 60000,
 };
+
+// Crear un pool reutilizable para la aplicación
+const pool = mysql.createPool(mysqlConfig);
 
 app.use(express.json()); // Middleware para procesar JSON
 
@@ -74,18 +70,17 @@ if (!fs.existsSync(uploadsDir)) {
 }
 app.use('/uploads', express.static(uploadsDir));
 
-app.get("/ping", async (req, res) => {
+app.get('/ping', async (req, res) => {
   try {
-    const pool = await sql.connect(sqlConfig);
-    const result = await pool.request().query("SELECT GETDATE() AS now");
-
+    // Ejecutar una consulta simple para verificar la conexión a MySQL
+    const [rows] = await pool.query('SELECT NOW() AS now');
     res.send({
-      pong: result.recordset[0].now,
+      pong: rows && rows[0] ? rows[0].now : null,
     });
   } catch (err) {
-    console.error("Error al conectar a SQL Server:", err);
+    console.error('Error al conectar a MySQL:', err);
     res.status(500).send({
-      error: "Error al conectar a la base de datos",
+      error: 'Error al conectar a la base de datos',
       details: err.message,
     });
   }
