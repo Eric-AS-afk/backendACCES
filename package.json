@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "node index.js"
-    
+
   },
   "keywords": [],
   "author": "",
@@ -21,7 +21,8 @@
     "node-fetch": "^3.3.2",
     "pg": "^8.11.3",
     "soap": "^1.1.11",
-    "xml2js": "^0.6.2"
+    "xml2js": "^0.6.2",
+    "multer": "^2.0.2"
   },
   "devDependencies": {
     "nodemon": "^3.0.1"
