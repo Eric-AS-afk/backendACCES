@@ -11,13 +11,13 @@ const pool = mysql.createPool({
 });
 
 export const getAllCasas = async () => {
-  const [rows] = await pool.query('SELECT * FROM SIE_CASA');
+  const [rows] = await pool.query('SELECT * FROM sie_casa');
   return rows;
 };
 
 export const getCasaById = async (id) => {
   console.log("Service getCasaById with id:", id, "type:", typeof id);
-  const [rows] = await pool.query('SELECT * FROM SIE_CASA WHERE CAS_CASA = ?', [id]);
+  const [rows] = await pool.query('SELECT * FROM sie_casa WHERE CAS_CASA = ?', [id]);
   console.log("Query result rows:", rows);
   return rows[0];
 };
@@ -25,7 +25,7 @@ export const getCasaById = async (id) => {
 export const createCasa = async (data) => {
   const { CAS_CASA, CAS_CODIGO, CAS_NUMERO, CAS_CALLE, CAS_AVENIDA } = data;
   const [result] = await pool.query(
-    'INSERT INTO SIE_CASA (CAS_CASA, CAS_CODIGO, CAS_NUMERO, CAS_CALLE, CAS_AVENIDA) VALUES (?, ?, ?, ?, ?)',
+    'INSERT INTO sie_casa (CAS_CASA, CAS_CODIGO, CAS_NUMERO, CAS_CALLE, CAS_AVENIDA) VALUES (?, ?, ?, ?, ?)',
     [CAS_CASA, CAS_CODIGO, CAS_NUMERO, CAS_CALLE, CAS_AVENIDA]
   );
   return result.insertId;
@@ -34,11 +34,11 @@ export const createCasa = async (data) => {
 export const updateCasa = async (id, data) => {
   const { CAS_CODIGO, CAS_NUMERO, CAS_CALLE, CAS_AVENIDA } = data;
   await pool.query(
-    'UPDATE SIE_CASA SET CAS_CODIGO=?, CAS_NUMERO=?, CAS_CALLE=?, CAS_AVENIDA=? WHERE CAS_CASA=?',
+    'UPDATE sie_casa SET CAS_CODIGO=?, CAS_NUMERO=?, CAS_CALLE=?, CAS_AVENIDA=? WHERE CAS_CASA=?',
     [CAS_CODIGO, CAS_NUMERO, CAS_CALLE, CAS_AVENIDA, id]
   );
 };
 
 export const deleteCasa = async (id) => {
-  await pool.query('DELETE FROM SIE_CASA WHERE CAS_CASA = ?', [id]);
+  await pool.query('DELETE FROM sie_casa WHERE CAS_CASA = ?', [id]);
 };
