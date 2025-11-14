@@ -1,4 +1,5 @@
-export const FRONTEND_URL = process.env.FRONTEND_URL || "sienacces.site";
+export const FRONTEND_URL = process.env.FRONTEND_URL || "https://sienacces.site";
+export const FRONTEND_LOGIN_URL = process.env.FRONTEND_LOGIN_URL || "https://sienacces.site/login";
 
 export const DB_HOST = process.env.DB_HOST || "localhost";
 export const DB_PORT = process.env.DB_PORT || 3306;
