@@ -17,8 +17,8 @@ export const getAllProveedores = async () => {
       p.PRO_CUENTA,
       p.SER_SERVICIO,
       s.SER_NOMBRE
-    FROM SIE_PROVEEDOR p
-    LEFT JOIN SIE_SERVICIO s ON p.SER_SERVICIO = s.SER_SERVICIO
+    FROM sie_proveedor p
+    LEFT JOIN sie_servicio s ON p.SER_SERVICIO = s.SER_SERVICIO
     ORDER BY p.PRO_PROVEEDOR DESC
   `);
   return rows;
@@ -26,7 +26,7 @@ export const getAllProveedores = async () => {
 
 export const getProveedorById = async (id) => {
   const [rows] = await pool.query(
-    'SELECT * FROM SIE_PROVEEDOR WHERE PRO_PROVEEDOR = ?',
+    'SELECT * FROM sie_proveedor WHERE PRO_PROVEEDOR = ?',
     [id]
   );
   return rows[0];
@@ -35,7 +35,7 @@ export const getProveedorById = async (id) => {
 export const createProveedor = async (proveedor) => {
   const { PRO_NOMBRE, PRO_CUENTA, SER_SERVICIO } = proveedor;
   const [result] = await pool.query(
-    'INSERT INTO SIE_PROVEEDOR (PRO_NOMBRE, PRO_CUENTA, SER_SERVICIO) VALUES (?, ?, ?)',
+    'INSERT INTO sie_proveedor (PRO_NOMBRE, PRO_CUENTA, SER_SERVICIO) VALUES (?, ?, ?)',
     [PRO_NOMBRE, PRO_CUENTA, SER_SERVICIO]
   );
   return result.insertId;
@@ -44,13 +44,13 @@ export const createProveedor = async (proveedor) => {
 export const updateProveedor = async (id, proveedor) => {
   const { PRO_NOMBRE, PRO_CUENTA, SER_SERVICIO } = proveedor;
   await pool.query(
-    'UPDATE SIE_PROVEEDOR SET PRO_NOMBRE = ?, PRO_CUENTA = ?, SER_SERVICIO = ? WHERE PRO_PROVEEDOR = ?',
+    'UPDATE sie_proveedor SET PRO_NOMBRE = ?, PRO_CUENTA = ?, SER_SERVICIO = ? WHERE PRO_PROVEEDOR = ?',
     [PRO_NOMBRE, PRO_CUENTA, SER_SERVICIO, id]
   );
   return id;
 };
 
 export const deleteProveedor = async (id) => {
-  await pool.query('DELETE FROM SIE_PROVEEDOR WHERE PRO_PROVEEDOR = ?', [id]);
+  await pool.query('DELETE FROM sie_proveedor WHERE PRO_PROVEEDOR = ?', [id]);
   return id;
 };

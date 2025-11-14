@@ -11,19 +11,19 @@ const pool = mysql.createPool({
 });
 
 export const getAllCuentas = async () => {
-  const [rows] = await pool.query('SELECT * FROM SIE_CUENTA_BANCARIA');
+  const [rows] = await pool.query('SELECT * FROM sie_cuenta_bancaria');
   return rows;
 };
 
 export const getCuentaById = async (id) => {
-  const [rows] = await pool.query('SELECT * FROM SIE_CUENTA_BANCARIA WHERE CUE_CUENTA = ?', [id]);
+  const [rows] = await pool.query('SELECT * FROM sie_cuenta_bancaria WHERE CUE_CUENTA = ?', [id]);
   return rows[0];
 };
 
 export const createCuenta = async (data) => {
   const { CUE_CUENTA, CUE_NUMERO, CUE_BANCO, CUE_TIPO, CUE_DUEÑO } = data;
   const [result] = await pool.query(
-    'INSERT INTO SIE_CUENTA_BANCARIA (CUE_CUENTA, CUE_NUMERO, CUE_BANCO, CUE_TIPO, CUE_DUEÑO) VALUES (?, ?, ?, ?, ?)',
+    'INSERT INTO sie_cuenta_bancaria (CUE_CUENTA, CUE_NUMERO, CUE_BANCO, CUE_TIPO, CUE_DUEÑO) VALUES (?, ?, ?, ?, ?)',
     [CUE_CUENTA, CUE_NUMERO, CUE_BANCO, CUE_TIPO, CUE_DUEÑO]
   );
   return result.insertId;
@@ -32,11 +32,11 @@ export const createCuenta = async (data) => {
 export const updateCuenta = async (id, data) => {
   const { CUE_NUMERO, CUE_BANCO, CUE_TIPO, CUE_DUEÑO } = data;
   await pool.query(
-    'UPDATE SIE_CUENTA_BANCARIA SET CUE_NUMERO=?, CUE_BANCO=?, CUE_TIPO=?, CUE_DUEÑO=? WHERE CUE_CUENTA=?',
+    'UPDATE sie_cuenta_bancaria SET CUE_NUMERO=?, CUE_BANCO=?, CUE_TIPO=?, CUE_DUEÑO=? WHERE CUE_CUENTA=?',
     [CUE_NUMERO, CUE_BANCO, CUE_TIPO, CUE_DUEÑO, id]
   );
 };
 
 export const deleteCuenta = async (id) => {
-  await pool.query('DELETE FROM SIE_CUENTA_BANCARIA WHERE CUE_CUENTA = ?', [id]);
+  await pool.query('DELETE FROM sie_cuenta_bancaria WHERE CUE_CUENTA = ?', [id]);
 };

@@ -11,19 +11,19 @@ const pool = mysql.createPool({
 });
 
 export const getAllTipos = async () => {
-  const [rows] = await pool.query('SELECT * FROM SIE_TIPO_PAGO');
+  const [rows] = await pool.query('SELECT * FROM sie_tipo_pago');
   return rows;
 };
 
 export const getTipoById = async (id) => {
-  const [rows] = await pool.query('SELECT * FROM SIE_TIPO_PAGO WHERE TIP_TIPO = ?', [id]);
+  const [rows] = await pool.query('SELECT * FROM sie_tipo_pago WHERE TIP_TIPO = ?', [id]);
   return rows[0];
 };
 
 export const createTipo = async (data) => {
   const { TIP_TIPO, TIP_NOMBRE, TIP_DESCRIPCION } = data;
   const [result] = await pool.query(
-    'INSERT INTO SIE_TIPO_PAGO (TIP_TIPO, TIP_NOMBRE, TIP_DESCRIPCION) VALUES (?, ?, ?)',
+    'INSERT INTO sie_tipo_pago (TIP_TIPO, TIP_NOMBRE, TIP_DESCRIPCION) VALUES (?, ?, ?)',
     [TIP_TIPO, TIP_NOMBRE, TIP_DESCRIPCION]
   );
   return result.insertId;
@@ -32,11 +32,11 @@ export const createTipo = async (data) => {
 export const updateTipo = async (id, data) => {
   const { TIP_NOMBRE, TIP_DESCRIPCION } = data;
   await pool.query(
-    'UPDATE SIE_TIPO_PAGO SET TIP_NOMBRE=?, TIP_DESCRIPCION=? WHERE TIP_TIPO=?',
+    'UPDATE sie_tipo_pago SET TIP_NOMBRE=?, TIP_DESCRIPCION=? WHERE TIP_TIPO=?',
     [TIP_NOMBRE, TIP_DESCRIPCION, id]
   );
 };
 
 export const deleteTipo = async (id) => {
-  await pool.query('DELETE FROM SIE_TIPO_PAGO WHERE TIP_TIPO = ?', [id]);
+  await pool.query('DELETE FROM sie_tipo_pago WHERE TIP_TIPO = ?', [id]);
 };

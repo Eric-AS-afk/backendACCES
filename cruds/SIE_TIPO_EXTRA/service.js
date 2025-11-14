@@ -10,11 +10,11 @@ const pool = mysql.createPool({
 });
 
 export const getAllTiposExtra = async () => {
-  const [rows] = await pool.query('SELECT * FROM SIE_TIPO_EXTRA');
+  const [rows] = await pool.query('SELECT * FROM sie_tipo_extra');
   return rows;
 };
 
 export const getTipoExtraById = async (id) => {
-  const [rows] = await pool.query('SELECT * FROM SIE_TIPO_EXTRA WHERE TIE_TIPO = ?', [id]);
+  const [rows] = await pool.query('SELECT * FROM sie_tipo_extra WHERE TIE_TIPO = ?', [id]);
   return rows[0];
 };

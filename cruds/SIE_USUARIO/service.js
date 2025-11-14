@@ -1,8 +1,8 @@
 export const getUsuarioByNombreYContrasena = async (nombre, contrasena) => {
   const [rows] = await pool.query(
     `SELECT u.*, t.TIP_NOMBRE as TIP_NOMBRE, t.TIP_DESCRIPCION as TIP_DESCRIPCION
-     FROM SIE_USUARIO u
-     JOIN SIE_TIPO_USUARIO t ON u.TIP_TIPO_USUARIO = t.TIP_TIPO_USUARIO
+     FROM sie_usuario u
+     JOIN sie_tipo_usuario t ON u.TIP_TIPO_USUARIO = t.TIP_TIPO_USUARIO
      WHERE u.US_NOMBRE = ? AND u.US_CONTRASEÑA = ?`,
     [nombre, contrasena]
   );
@@ -21,19 +21,19 @@ const pool = mysql.createPool({
 });
 
 export const getAllUsuarios = async () => {
-  const [rows] = await pool.query('SELECT * FROM SIE_USUARIO');
+  const [rows] = await pool.query('SELECT * FROM sie_usuario');
   return rows;
 };
 
 export const getUsuarioById = async (id) => {
-  const [rows] = await pool.query('SELECT * FROM SIE_USUARIO WHERE US_USUARIO = ?', [id]);
+  const [rows] = await pool.query('SELECT * FROM sie_usuario WHERE US_USUARIO = ?', [id]);
   return rows[0];
 };
 
 export const createUsuario = async (data) => {
   const { US_USUARIO, US_NOMBRE, US_CONTRASEÑA, TIP_TIPO_USUARIO, CAS_CASA, US_TELEFONO, US_CORREO } = data;
   const [result] = await pool.query(
-    'INSERT INTO SIE_USUARIO (US_USUARIO, US_NOMBRE, US_CONTRASEÑA, TIP_TIPO_USUARIO, CAS_CASA, US_TELEFONO, US_CORREO) VALUES (?, ?, ?, ?, ?, ?, ?)',
+    'INSERT INTO sie_usuario (US_USUARIO, US_NOMBRE, US_CONTRASEÑA, TIP_TIPO_USUARIO, CAS_CASA, US_TELEFONO, US_CORREO) VALUES (?, ?, ?, ?, ?, ?, ?)',
     [US_USUARIO, US_NOMBRE, US_CONTRASEÑA, TIP_TIPO_USUARIO, CAS_CASA, US_TELEFONO, US_CORREO]
   );
   return result.insertId;
@@ -42,11 +42,11 @@ export const createUsuario = async (data) => {
 export const updateUsuario = async (id, data) => {
   const { US_NOMBRE, US_CONTRASEÑA, TIP_TIPO_USUARIO, CAS_CASA, US_TELEFONO, US_CORREO } = data;
   await pool.query(
-    'UPDATE SIE_USUARIO SET US_NOMBRE=?, US_CONTRASEÑA=?, TIP_TIPO_USUARIO=?, CAS_CASA=?, US_TELEFONO=?, US_CORREO=? WHERE US_USUARIO=?',
+    'UPDATE sie_usuario SET US_NOMBRE=?, US_CONTRASEÑA=?, TIP_TIPO_USUARIO=?, CAS_CASA=?, US_TELEFONO=?, US_CORREO=? WHERE US_USUARIO=?',
     [US_NOMBRE, US_CONTRASEÑA, TIP_TIPO_USUARIO, CAS_CASA, US_TELEFONO, US_CORREO, id]
   );
 };
 
 export const deleteUsuario = async (id) => {
-  await pool.query('DELETE FROM SIE_USUARIO WHERE US_USUARIO = ?', [id]);
+  await pool.query('DELETE FROM sie_usuario WHERE US_USUARIO = ?', [id]);
 };

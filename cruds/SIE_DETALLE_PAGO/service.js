@@ -12,19 +12,19 @@ const pool = mysql.createPool({
 });
 
 export const getAllDetalles = async () => {
-  const [rows] = await pool.query('SELECT * FROM SIE_DETALLE_PAGO');
+  const [rows] = await pool.query('SELECT * FROM sie_detalle_pago');
   return rows;
 };
 
 export const getDetalleById = async (id) => {
-  const [rows] = await pool.query('SELECT * FROM SIE_DETALLE_PAGO WHERE DET_DETALLE = ?', [id]);
+  const [rows] = await pool.query('SELECT * FROM sie_detalle_pago WHERE DET_DETALLE = ?', [id]);
   return rows[0];
 };
 
 export const createDetalle = async (data) => {
   const { PAG_PAGO, SER_SERVICIO, DET_FECHA_PAGO } = data;
   const [result] = await pool.query(
-    'INSERT INTO SIE_DETALLE_PAGO (PAG_PAGO, SER_SERVICIO, DET_FECHA_PAGO) VALUES (?, ?, ?)',
+    'INSERT INTO sie_detalle_pago (PAG_PAGO, SER_SERVICIO, DET_FECHA_PAGO) VALUES (?, ?, ?)',
     [PAG_PAGO, SER_SERVICIO, DET_FECHA_PAGO]
   );
   return result.insertId;
@@ -33,11 +33,11 @@ export const createDetalle = async (data) => {
 export const updateDetalle = async (id, data) => {
   const { PAG_PAGO, SER_SERVICIO, DET_FECHA_PAGO } = data;
   await pool.query(
-    'UPDATE SIE_DETALLE_PAGO SET PAG_PAGO=?, SER_SERVICIO=?, DET_FECHA_PAGO=? WHERE DET_DETALLE=?',
+    'UPDATE sie_detalle_pago SET PAG_PAGO=?, SER_SERVICIO=?, DET_FECHA_PAGO=? WHERE DET_DETALLE=?',
     [PAG_PAGO, SER_SERVICIO, DET_FECHA_PAGO, id]
   );
 };
 
 export const deleteDetalle = async (id) => {
-  await pool.query('DELETE FROM SIE_DETALLE_PAGO WHERE DET_DETALLE = ?', [id]);
+  await pool.query('DELETE FROM sie_detalle_pago WHERE DET_DETALLE = ?', [id]);
 };

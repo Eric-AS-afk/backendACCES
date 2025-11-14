@@ -21,10 +21,10 @@ export const getAllRetiros = async (usuarioId = null) => {
       u.US_NOMBRE,
       p.PRO_NOMBRE,
       tp.TIP_DESCRIPCION
-    FROM SIE_RETIRO r
-    LEFT JOIN SIE_USUARIO u ON r.US_USUARIO = u.US_USUARIO
-    LEFT JOIN SIE_PROVEEDOR p ON r.PRO_PROVEEDOR = p.PRO_PROVEEDOR
-    LEFT JOIN SIE_TIPO_PAGO tp ON r.TIP_TIPO = tp.TIP_TIPO
+    FROM sie_retiro r
+    LEFT JOIN sie_usuario u ON r.US_USUARIO = u.US_USUARIO
+    LEFT JOIN sie_proveedor p ON r.PRO_PROVEEDOR = p.PRO_PROVEEDOR
+    LEFT JOIN sie_tipo_pago tp ON r.TIP_TIPO = tp.TIP_TIPO
   `;
   
   const params = [];
@@ -41,7 +41,7 @@ export const getAllRetiros = async (usuarioId = null) => {
 
 export const getRetiroById = async (id) => {
   const [rows] = await pool.query(
-    'SELECT * FROM SIE_RETIRO WHERE RET_RETIRO = ?',
+    'SELECT * FROM sie_retiro WHERE RET_RETIRO = ?',
     [id]
   );
   return rows[0];
@@ -50,7 +50,7 @@ export const getRetiroById = async (id) => {
 export const createRetiro = async (retiro) => {
   const { US_USUARIO, PRO_PROVEEDOR, RET_FECHA, RET_TOTAL, TIP_TIPO } = retiro;
   const [result] = await pool.query(
-    'INSERT INTO SIE_RETIRO (US_USUARIO, PRO_PROVEEDOR, RET_FECHA, RET_TOTAL, TIP_TIPO) VALUES (?, ?, ?, ?, ?)',
+    'INSERT INTO sie_retiro (US_USUARIO, PRO_PROVEEDOR, RET_FECHA, RET_TOTAL, TIP_TIPO) VALUES (?, ?, ?, ?, ?)',
     [US_USUARIO, PRO_PROVEEDOR, RET_FECHA, RET_TOTAL, TIP_TIPO]
   );
   return result.insertId;
@@ -59,13 +59,13 @@ export const createRetiro = async (retiro) => {
 export const updateRetiro = async (id, retiro) => {
   const { US_USUARIO, PRO_PROVEEDOR, RET_FECHA, RET_TOTAL, TIP_TIPO } = retiro;
   await pool.query(
-    'UPDATE SIE_RETIRO SET US_USUARIO = ?, PRO_PROVEEDOR = ?, RET_FECHA = ?, RET_TOTAL = ?, TIP_TIPO = ? WHERE RET_RETIRO = ?',
+    'UPDATE sie_retiro SET US_USUARIO = ?, PRO_PROVEEDOR = ?, RET_FECHA = ?, RET_TOTAL = ?, TIP_TIPO = ? WHERE RET_RETIRO = ?',
     [US_USUARIO, PRO_PROVEEDOR, RET_FECHA, RET_TOTAL, TIP_TIPO, id]
   );
   return id;
 };
 
 export const deleteRetiro = async (id) => {
-  await pool.query('DELETE FROM SIE_RETIRO WHERE RET_RETIRO = ?', [id]);
+  await pool.query('DELETE FROM sie_retiro WHERE RET_RETIRO = ?', [id]);
   return id;
 };
