@@ -49,7 +49,7 @@ export const deleteExtra = async (id) => {
 // Verifica si un número de boleta (EXT_CODIGO) ya fue registrado
 export const checkExtraByCodigo = async (codigo) => {
   const [rows] = await pool.query(
-    'SELECT * FROM SIE_EXTRA WHERE EXT_CODIGO = ? LIMIT 1',
+    'SELECT * FROM sie_extra WHERE EXT_CODIGO = ? LIMIT 1',
     [codigo]
   );
   return rows[0] || null;
