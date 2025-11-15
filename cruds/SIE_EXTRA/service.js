@@ -45,3 +45,12 @@ export const updateExtra = async (id, data) => {
 export const deleteExtra = async (id) => {
   await pool.query('DELETE FROM sie_extra WHERE EXT_EXTRA = ?', [id]);
 };
+
+// Verifica si un número de boleta (EXT_CODIGO) ya fue registrado
+export const checkExtraByCodigo = async (codigo) => {
+  const [rows] = await pool.query(
+    'SELECT * FROM SIE_EXTRA WHERE EXT_CODIGO = ? LIMIT 1',
+    [codigo]
+  );
+  return rows[0] || null;
+};

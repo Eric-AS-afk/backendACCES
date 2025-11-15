@@ -63,6 +63,15 @@ export const checkPagoByUsuarioMesAnio = async (usuarioId, mes, anio) => {
   return rows[0] || null;
 };
 
+// Verifica si un número de boleta (PAG_CODIGO) ya fue registrado
+export const checkPagoByCodigo = async (codigo) => {
+  const [rows] = await pool.query(
+    'SELECT * FROM SIE_PAGO WHERE PAG_CODIGO = ? LIMIT 1',
+    [codigo]
+  );
+  return rows[0] || null;
+};
+
 // Obtiene todos los pagos de un usuario
 export const getPagosByUsuario = async (usuarioId) => {
   const [rows] = await pool.query(

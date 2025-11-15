@@ -9,6 +9,7 @@ const router = Router();
 
 router.get('/', pagoController.getAllPagos);
 router.get('/check-status', pagoController.checkPagoStatus);
+router.get('/check-codigo', pagoController.checkPagoCodigo);
 router.get('/por-usuario', pagoController.getPagosByUsuario);
 router.get('/todos-con-usuario', pagoController.getAllPagosConUsuario);
 router.get('/:id', pagoController.getPagoById);

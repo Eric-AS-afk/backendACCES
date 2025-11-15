@@ -53,3 +53,16 @@ export const deleteExtra = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+// Verifica si un número de boleta (EXT_CODIGO) ya fue registrado
+export const checkExtraCodigo = async (req, res) => {
+  const { codigo } = req.query;
+  if (!codigo) return res.status(400).json({ error: 'codigo es requerido' });
+  try {
+    const extra = await extraService.checkExtraByCodigo(codigo);
+    res.json({ exists: !!extra, extra });
+  } catch (err) {
+    console.error('checkExtraCodigo - Error:', err);
+    res.status(500).json({ error: err.message });
+  }
+};

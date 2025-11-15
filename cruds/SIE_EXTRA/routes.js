@@ -7,6 +7,7 @@ const router = express.Router();
 
 router.get('/', extraController.getAllExtras);
 router.get('/:id', extraController.getExtraById);
+router.get('/check-codigo', extraController.checkExtraCodigo);
 router.post('/', extraController.createExtra);
 router.post('/upload', upload.single('evidencia'), (req, res) => {
 	if (!req.file) return res.status(400).json({ error: 'No file uploaded' });

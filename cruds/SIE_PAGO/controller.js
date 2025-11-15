@@ -92,6 +92,19 @@ export const checkPagoStatus = async (req, res) => {
   }
 };
 
+// Verifica si un número de boleta ya fue registrado
+export const checkPagoCodigo = async (req, res) => {
+  const { codigo } = req.query;
+  if (!codigo) return res.status(400).json({ error: 'codigo es requerido' });
+  try {
+    const pago = await pagoService.checkPagoByCodigo(codigo);
+    res.json({ exists: !!pago, pago });
+  } catch (err) {
+    console.error('checkPagoCodigo - Error:', err);
+    res.status(500).json({ error: err.message });
+  }
+};
+
 export const getPagosByUsuario = async (req, res) => {
   const { usuarioId } = req.query;
   if (!usuarioId) return res.status(400).json({ error: 'usuarioId es requerido' });
