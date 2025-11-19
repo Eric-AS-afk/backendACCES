@@ -23,6 +23,8 @@ import tipoExtraRoutes from './cruds/SIE_TIPO_EXTRA/routes.js';
 import proveedorRoutes from './cruds/SIE_PROVEEDOR/routes.js';
 import retiroRoutes from './cruds/SIE_RETIRO/routes.js';
 import eventoRoutes from './cruds/SIE_EVENTO/routes.js';
+import multaRoutes from './cruds/SIE_MULTA/routes.js';
+import pagoMultaRoutes from './cruds/SIE_PAGO_MULTA/routes.js';
 import path from 'path';
 import fs from 'fs';
 
@@ -62,6 +64,8 @@ app.use('/api/tipo-extra', tipoExtraRoutes);
 app.use('/api/proveedor', proveedorRoutes);
 app.use('/api/retiro', retiroRoutes);
 app.use('/api/evento', eventoRoutes);
+app.use('/api/multa', multaRoutes);
+app.use('/api/pago-multa', pagoMultaRoutes);
 
 // Servir estáticamente las evidencias
 const uploadsDir = path.resolve('uploads');
