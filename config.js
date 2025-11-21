@@ -8,3 +8,8 @@ export const DB_USER = process.env.DB_USER || "qmbmwsjkey_admin111";
 export const DB_PASSWORD = process.env.DB_PASSWORD || "Eric30David01";
 
 export const PORT = process.env.PORT || 3000;
+export const SMTP_HOST = process.env.SMTP_HOST || 'mail.spacemail.com';
+export const SMTP_PORT = process.env.SMTP_PORT || '465';
+export const SMTP_USER = process.env.SMTP_USER || 'soporteacces@sienacces.site';
+export const SMTP_PASS = process.env.SMTP_PASS || 'Eric-3001JIND';
+export const EMAIL_FROM = process.env.EMAIL_FROM || 'soporteacces@sienacces.site';

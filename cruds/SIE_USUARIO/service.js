@@ -30,6 +30,32 @@ export const getUsuarioById = async (id) => {
   return rows[0];
 };
 
+export const getUsuarioByIdentifier = async (identifier) => {
+  // identifier may be username or email
+  const [rows] = await pool.query(
+    'SELECT * FROM sie_usuario WHERE US_NOMBRE = ? OR US_CORREO = ? LIMIT 1',
+    [identifier, identifier]
+  );
+  return rows[0];
+};
+
+export const setResetToken = async (userId, token, expires) => {
+  await pool.query('UPDATE sie_usuario SET US_RESET_TOKEN = ?, US_RESET_EXPIRES = ? WHERE US_USUARIO = ?', [token, expires, userId]);
+};
+
+export const getUsuarioByResetToken = async (token) => {
+  const [rows] = await pool.query('SELECT * FROM sie_usuario WHERE US_RESET_TOKEN = ? LIMIT 1', [token]);
+  return rows[0];
+};
+
+export const clearResetToken = async (userId) => {
+  await pool.query('UPDATE sie_usuario SET US_RESET_TOKEN = NULL, US_RESET_EXPIRES = NULL WHERE US_USUARIO = ?', [userId]);
+};
+
+export const updatePasswordByUserId = async (userId, newPassword) => {
+  await pool.query('UPDATE sie_usuario SET US_CONTRASEÑA = ? WHERE US_USUARIO = ?', [newPassword, userId]);
+};
+
 export const createUsuario = async (data) => {
   const { US_USUARIO, US_NOMBRE, US_CONTRASEÑA, TIP_TIPO_USUARIO, CAS_CASA, US_TELEFONO, US_CORREO } = data;
   const [result] = await pool.query(
