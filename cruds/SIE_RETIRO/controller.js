@@ -1,4 +1,5 @@
-import { getAllRetiros as svcGetAll, getRetiroById as svcGetById, createRetiro as svcCreate, updateRetiro as svcUpdate, deleteRetiro as svcDelete } from './service.js';
+import { getAllRetiros as svcGetAll, getRetiroById as svcGetById, createRetiro as svcCreate, updateRetiro as svcUpdate, deleteRetiro as svcDelete, updateRetiroEvidencia as svcUpdateEvidencia } from './service.js';
+import upload from './upload.js';
 
 export const getAllRetiros = async (req, res) => {
   try {
@@ -51,6 +52,19 @@ export const deleteRetiro = async (req, res) => {
   } catch (error) {
     console.error('Error al eliminar retiro:', error);
     res.status(500).json({ error: 'Error al eliminar retiro' });
+  }
+};
+
+export const uploadEvidenciaRetiro = async (req, res) => {
+  try {
+    const id = req.params.id;
+    if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
+    const filename = req.file.filename;
+    await svcUpdateEvidencia(id, filename);
+    res.json({ success: true, filename });
+  } catch (err) {
+    console.error('Error uploading evidencia for retiro:', err);
+    res.status(500).json({ error: 'Error al subir evidencia' });
   }
 };
  
