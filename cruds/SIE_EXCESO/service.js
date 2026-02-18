@@ -21,19 +21,19 @@ export const getExcesoById = async (id) => {
 };
 
 export const createExceso = async (data) => {
-  const { EXC_DESC, US_USUARIO, EXC_VALOR } = data;
+  const { EXC_DESC, US_USUARIO, EXC_VALOR, EXC_ESTADO } = data;
   const [result] = await pool.query(
-    'INSERT INTO sie_exceso (EXC_DESC, US_USUARIO, EXC_VALOR) VALUES (?, ?, ?)',
-    [EXC_DESC, US_USUARIO, EXC_VALOR]
+    'INSERT INTO sie_exceso (EXC_DESC, US_USUARIO, EXC_VALOR, EXC_ESTADO) VALUES (?, ?, ?, ?)',
+    [EXC_DESC, US_USUARIO, EXC_VALOR, EXC_ESTADO]
   );
   return result.insertId;
 };
 
 export const updateExceso = async (id, data) => {
-  const { EXC_DESC, US_USUARIO, EXC_VALOR } = data;
+  const { EXC_DESC, US_USUARIO, EXC_VALOR, EXC_ESTADO } = data;
   await pool.query(
-    'UPDATE sie_exceso SET EXC_DESC = ?, US_USUARIO = ?, EXC_VALOR = ? WHERE EXC_EXCESO = ?',
-    [EXC_DESC, US_USUARIO, EXC_VALOR, id]
+    'UPDATE sie_exceso SET EXC_DESC = ?, US_USUARIO = ?, EXC_VALOR = ?, EXC_ESTADO = ? WHERE EXC_EXCESO = ?',
+    [EXC_DESC, US_USUARIO, EXC_VALOR, EXC_ESTADO, id]
   );
 };
 
