@@ -40,3 +40,17 @@ export const updateExceso = async (id, data) => {
 export const deleteExceso = async (id) => {
   await pool.query('DELETE FROM sie_exceso WHERE EXC_EXCESO = ?', [id]);
 };
+
+export const markExcesosPagados = async ({ US_USUARIO, EXC_IDS, EXC_ESTADO = 'Pagado' }) => {
+  const placeholders = EXC_IDS.map(() => '?').join(', ');
+  const sql = `
+    UPDATE sie_exceso
+    SET EXC_ESTADO = ?
+    WHERE US_USUARIO = ?
+      AND EXC_EXCESO IN (${placeholders})
+  `;
+
+  const params = [EXC_ESTADO, US_USUARIO, ...EXC_IDS];
+  const [result] = await pool.query(sql, params);
+  return result.affectedRows || 0;
+};
