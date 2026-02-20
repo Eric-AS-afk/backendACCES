@@ -10,12 +10,10 @@ const pool = mysql.createPool({
   port: DB_PORT || 3306,
 });
 
-const normalizeExcesoEstado = (value, fallback = 'PENDIENTE') => {
-  const text = String(value ?? '').trim().toLowerCase();
-  if (!text) return fallback;
-  if (text === 'pendiente') return 'PENDIENTE';
-  if (text === 'pagado') return 'PAGADO';
-  return fallback;
+const normalizePositiveInt = (value, fallback = null) => {
+  const parsed = parseInt(value, 10);
+  if (!Number.isInteger(parsed) || parsed <= 0) return fallback;
+  return parsed;
 };
 
 export const listAllExceso = async () => {
@@ -32,10 +30,11 @@ export const createExceso = async (data) => {
   const EXC_DESC = data?.EXC_DESC ?? data?.exc_desc ?? '';
   const US_USUARIO = data?.US_USUARIO ?? data?.us_usuario;
   const EXC_VALOR = data?.EXC_VALOR ?? data?.exc_valor ?? 0;
-  const EXC_ESTADO = normalizeExcesoEstado(data?.EXC_ESTADO ?? data?.exc_estado ?? data?.estado, 'PENDIENTE');
+  const EXC_MES = normalizePositiveInt(data?.EXC_MES ?? data?.exc_mes ?? data?.mes, new Date().getMonth() + 1);
+  const EXC_AÑO = normalizePositiveInt(data?.EXC_AÑO ?? data?.EXC_ANIO ?? data?.exc_año ?? data?.exc_anio ?? data?.anio ?? data?.año, new Date().getFullYear());
   const [result] = await pool.query(
-    'INSERT INTO sie_exceso (EXC_DESC, US_USUARIO, EXC_VALOR, EXC_ESTADO) VALUES (?, ?, ?, ?)',
-    [EXC_DESC, US_USUARIO, EXC_VALOR, EXC_ESTADO]
+    'INSERT INTO sie_exceso (EXC_DESC, US_USUARIO, EXC_VALOR, EXC_MES, `EXC_AÑO`) VALUES (?, ?, ?, ?, ?)',
+    [EXC_DESC, US_USUARIO, EXC_VALOR, EXC_MES, EXC_AÑO]
   );
   return result.insertId;
 };
@@ -44,37 +43,23 @@ export const updateExceso = async (id, data) => {
   const EXC_DESC = data?.EXC_DESC ?? data?.exc_desc ?? null;
   const US_USUARIO = data?.US_USUARIO ?? data?.us_usuario ?? null;
   const EXC_VALOR = data?.EXC_VALOR ?? data?.exc_valor ?? null;
-  const EXC_ESTADO_RAW = data?.EXC_ESTADO ?? data?.exc_estado ?? data?.estado;
-  const EXC_ESTADO = EXC_ESTADO_RAW == null
-    ? null
-    : normalizeExcesoEstado(EXC_ESTADO_RAW, 'PENDIENTE');
+  const EXC_MES_RAW = data?.EXC_MES ?? data?.exc_mes ?? data?.mes;
+  const EXC_AÑO_RAW = data?.EXC_AÑO ?? data?.EXC_ANIO ?? data?.exc_año ?? data?.exc_anio ?? data?.anio ?? data?.año;
+  const EXC_MES = EXC_MES_RAW == null ? null : normalizePositiveInt(EXC_MES_RAW, null);
+  const EXC_AÑO = EXC_AÑO_RAW == null ? null : normalizePositiveInt(EXC_AÑO_RAW, null);
 
   await pool.query(
     `UPDATE sie_exceso
      SET EXC_DESC = COALESCE(?, EXC_DESC),
          US_USUARIO = COALESCE(?, US_USUARIO),
          EXC_VALOR = COALESCE(?, EXC_VALOR),
-         EXC_ESTADO = COALESCE(?, EXC_ESTADO)
+         EXC_MES = COALESCE(?, EXC_MES),
+         \`EXC_AÑO\` = COALESCE(?, \`EXC_AÑO\`)
      WHERE EXC_EXCESO = ?`,
-    [EXC_DESC, US_USUARIO, EXC_VALOR, EXC_ESTADO, id]
+    [EXC_DESC, US_USUARIO, EXC_VALOR, EXC_MES, EXC_AÑO, id]
   );
 };
 
 export const deleteExceso = async (id) => {
   await pool.query('DELETE FROM sie_exceso WHERE EXC_EXCESO = ?', [id]);
-};
-
-export const markExcesosPagados = async ({ US_USUARIO, EXC_IDS, EXC_ESTADO = 'Pagado' }) => {
-  const estadoNormalizado = normalizeExcesoEstado(EXC_ESTADO, 'PAGADO');
-  const placeholders = EXC_IDS.map(() => '?').join(', ');
-  const sql = `
-    UPDATE sie_exceso
-    SET EXC_ESTADO = ?
-    WHERE US_USUARIO = ?
-      AND EXC_EXCESO IN (${placeholders})
-  `;
-
-  const params = [estadoNormalizado, US_USUARIO, ...EXC_IDS];
-  const [result] = await pool.query(sql, params);
-  return result.affectedRows || 0;
 };

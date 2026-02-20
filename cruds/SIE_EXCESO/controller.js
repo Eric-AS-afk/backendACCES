@@ -51,33 +51,3 @@ export const deleteExceso = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
-
-export const marcarExcesosPagados = async (req, res) => {
-  try {
-    const usuarioId = parseInt(req.body?.US_USUARIO, 10);
-    const estado = (req.body?.EXC_ESTADO || 'Pagado').toString().trim() || 'Pagado';
-    const idsRaw = Array.isArray(req.body?.EXC_IDS) ? req.body.EXC_IDS : [];
-    const excesoIds = idsRaw
-      .map((id) => parseInt(id, 10))
-      .filter((id) => Number.isInteger(id) && id > 0);
-
-    if (!Number.isInteger(usuarioId) || usuarioId <= 0) {
-      return res.status(400).json({ error: 'US_USUARIO es obligatorio y debe ser numérico' });
-    }
-
-    if (excesoIds.length === 0) {
-      return res.status(400).json({ error: 'EXC_IDS debe contener al menos un ID válido' });
-    }
-
-    const updated = await service.markExcesosPagados({
-      US_USUARIO: usuarioId,
-      EXC_IDS: excesoIds,
-      EXC_ESTADO: estado,
-    });
-
-    res.json({ success: true, updated });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: err.message });
-  }
-};
