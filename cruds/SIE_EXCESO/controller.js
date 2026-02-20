@@ -28,7 +28,11 @@ export const createExceso = async (req, res) => {
     res.status(201).json({ id });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: err.message });
+    res.status(500).json({
+      error: err.message,
+      code: err.code || null,
+      sqlMessage: err.sqlMessage || null,
+    });
   }
 };
 
