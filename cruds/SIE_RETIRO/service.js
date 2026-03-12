@@ -17,6 +17,8 @@ export const getAllRetiros = async (usuarioId = null) => {
       r.PRO_PROVEEDOR,
       r.RET_EVIDENCIA,
       r.RET_FECHA,
+      r.RET_SUBTOTAL,
+      r.RET_RETENCION,
       r.RET_TOTAL,
       r.TIP_TIPO,
       u.US_NOMBRE,
@@ -49,19 +51,19 @@ export const getRetiroById = async (id) => {
 };
 
 export const createRetiro = async (retiro) => {
-  const { US_USUARIO, PRO_PROVEEDOR, RET_FECHA, RET_TOTAL, TIP_TIPO, RET_EVIDENCIA } = retiro;
+  const { US_USUARIO, PRO_PROVEEDOR, RET_FECHA, RET_SUBTOTAL, RET_RETENCION, RET_TOTAL, TIP_TIPO, RET_EVIDENCIA } = retiro;
   const [result] = await pool.query(
-    'INSERT INTO sie_retiro (US_USUARIO, PRO_PROVEEDOR, RET_FECHA, RET_TOTAL, TIP_TIPO, RET_EVIDENCIA) VALUES (?, ?, ?, ?, ?, ?)',
-    [US_USUARIO, PRO_PROVEEDOR, RET_FECHA, RET_TOTAL, TIP_TIPO, RET_EVIDENCIA || null]
+    'INSERT INTO sie_retiro (US_USUARIO, PRO_PROVEEDOR, RET_FECHA, RET_SUBTOTAL, RET_RETENCION, RET_TOTAL, TIP_TIPO, RET_EVIDENCIA) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+    [US_USUARIO, PRO_PROVEEDOR, RET_FECHA, RET_SUBTOTAL, RET_RETENCION, RET_TOTAL, TIP_TIPO, RET_EVIDENCIA || null]
   );
   return result.insertId;
 };
 
 export const updateRetiro = async (id, retiro) => {
-  const { US_USUARIO, PRO_PROVEEDOR, RET_FECHA, RET_TOTAL, TIP_TIPO, RET_EVIDENCIA } = retiro;
+  const { US_USUARIO, PRO_PROVEEDOR, RET_FECHA, RET_SUBTOTAL, RET_RETENCION, RET_TOTAL, TIP_TIPO, RET_EVIDENCIA } = retiro;
   await pool.query(
-    'UPDATE sie_retiro SET US_USUARIO = ?, PRO_PROVEEDOR = ?, RET_FECHA = ?, RET_TOTAL = ?, TIP_TIPO = ?, RET_EVIDENCIA = ? WHERE RET_RETIRO = ?',
-    [US_USUARIO, PRO_PROVEEDOR, RET_FECHA, RET_TOTAL, TIP_TIPO, RET_EVIDENCIA || null, id]
+    'UPDATE sie_retiro SET US_USUARIO = ?, PRO_PROVEEDOR = ?, RET_FECHA = ?, RET_SUBTOTAL = ?, RET_RETENCION = ?, RET_TOTAL = ?, TIP_TIPO = ?, RET_EVIDENCIA = ? WHERE RET_RETIRO = ?',
+    [US_USUARIO, PRO_PROVEEDOR, RET_FECHA, RET_SUBTOTAL, RET_RETENCION, RET_TOTAL, TIP_TIPO, RET_EVIDENCIA || null, id]
   );
   return id;
 };

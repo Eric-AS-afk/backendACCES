@@ -27,7 +27,17 @@ export const getRetiroById = async (req, res) => {
 
 export const createRetiro = async (req, res) => {
   try {
-    const id = await svcCreate(req.body);
+    const payload = {
+      US_USUARIO: req.body.US_USUARIO,
+      PRO_PROVEEDOR: req.body.PRO_PROVEEDOR,
+      RET_FECHA: req.body.RET_FECHA,
+      RET_SUBTOTAL: req.body.RET_SUBTOTAL,
+      RET_RETENCION: req.body.RET_RETENCION,
+      RET_TOTAL: req.body.RET_TOTAL,
+      TIP_TIPO: req.body.TIP_TIPO,
+      RET_EVIDENCIA: req.body.RET_EVIDENCIA,
+    };
+    const id = await svcCreate(payload);
     res.status(201).json({ RET_RETIRO: id, message: 'Retiro creado exitosamente' });
   } catch (error) {
     console.error('Error al crear retiro:', error);
@@ -37,7 +47,17 @@ export const createRetiro = async (req, res) => {
 
 export const updateRetiro = async (req, res) => {
   try {
-    await svcUpdate(req.params.id, req.body);
+    const payload = {
+      US_USUARIO: req.body.US_USUARIO,
+      PRO_PROVEEDOR: req.body.PRO_PROVEEDOR,
+      RET_FECHA: req.body.RET_FECHA,
+      RET_SUBTOTAL: req.body.RET_SUBTOTAL,
+      RET_RETENCION: req.body.RET_RETENCION,
+      RET_TOTAL: req.body.RET_TOTAL,
+      TIP_TIPO: req.body.TIP_TIPO,
+      RET_EVIDENCIA: req.body.RET_EVIDENCIA,
+    };
+    await svcUpdate(req.params.id, payload);
     res.json({ message: 'Retiro actualizado exitosamente' });
   } catch (error) {
     console.error('Error al actualizar retiro:', error);
