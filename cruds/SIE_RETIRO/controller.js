@@ -28,6 +28,7 @@ export const getRetiroById = async (req, res) => {
 export const createRetiro = async (req, res) => {
   try {
     const payload = {
+      RET_CODIGO: req.body.RET_CODIGO,
       US_USUARIO: req.body.US_USUARIO,
       PRO_PROVEEDOR: req.body.PRO_PROVEEDOR,
       RET_FECHA: req.body.RET_FECHA,
@@ -48,6 +49,7 @@ export const createRetiro = async (req, res) => {
 export const updateRetiro = async (req, res) => {
   try {
     const payload = {
+      RET_CODIGO: req.body.RET_CODIGO,
       US_USUARIO: req.body.US_USUARIO,
       PRO_PROVEEDOR: req.body.PRO_PROVEEDOR,
       RET_FECHA: req.body.RET_FECHA,
